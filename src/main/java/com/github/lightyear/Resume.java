@@ -6,7 +6,6 @@ import java.util.Map;
 public class Resume {
     private int id = 0;
     private String name = null;
-    private String secondName = null;
     private String profession = null;
 
     private String phone = null;
@@ -24,7 +23,6 @@ public class Resume {
     public Resume resumeFactory(Map<String, Object> arguments){
         id = (Integer)arguments.get("id");
         name = (String)arguments.get("name");
-        secondName = (String)arguments.get("secondName");
         profession = (String)arguments.get("profession");
         phone = (String)arguments.get("phone");
         email = (String)arguments.get("email");
@@ -45,10 +43,6 @@ public class Resume {
 
     public String getName() {
         return name;
-    }
-
-    public String getSecondName() {
-        return secondName;
     }
 
     public String getProfession() {
