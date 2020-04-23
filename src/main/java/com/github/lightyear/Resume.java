@@ -32,7 +32,7 @@ public class Resume {
         faculty = (String)arguments.get("faculty");
         company = (String)arguments.get("company");
         time = (String)arguments.get("time");
-        skills = (List<String>)arguments.get("skills");
+        skills = (List<String>)arguments.get("skillsList");
 
         return this;
     }

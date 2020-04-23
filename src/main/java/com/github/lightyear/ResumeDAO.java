@@ -19,7 +19,7 @@ public class ResumeDAO {
     }
 
     //create connection if it is absent or close
-    protected void connect() throws SQLException {
+    private void connect() throws SQLException {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
             try {
                 Class.forName("org.postgresql.Driver");
@@ -31,7 +31,7 @@ public class ResumeDAO {
         }
     }
 
-    protected void disconnect() throws SQLException {
+    private void disconnect() throws SQLException {
         if (jdbcConnection != null && !jdbcConnection.isClosed()) {
             jdbcConnection.close();
         }
@@ -53,10 +53,10 @@ public class ResumeDAO {
         Map<String, Object> dataMap = new HashMap<String, Object>();
 
         String candidateQuery = "SELECT * FROM candidates WHERE name = ?;";
-        String contactsQuery = "SELECT * FROM contacts WHERE id = ?;";
-        String educationQuery = "SELECT * FROM education WHERE id = ?;";
-        String experienceQuery = "SELECT * FROM experience WHERE id = ?;";
-        String skillsQuery = "SELECT * FROM skills WHERE id = ?;";
+        String contactsQuery = "SELECT * FROM contacts WHERE candidate_id = ?;";
+        String educationQuery = "SELECT * FROM education WHERE candidate_id = ?;";
+        String experienceQuery = "SELECT * FROM experience WHERE candidate_id = ?;";
+        String skillsQuery = "SELECT * FROM skills WHERE candidate_id = ?;";
 
         connect();
         //get candidates table
@@ -105,6 +105,7 @@ public class ResumeDAO {
         statement.close();
         disconnect();
 
+        dataMap.put("id", id);
         dataMap.put("profession", profession);
         dataMap.put("phone", phone);
         dataMap.put("email", email);
@@ -118,5 +119,26 @@ public class ResumeDAO {
         dataMap.put("skillsList", skillsList);
 
         return dataMap;
+    }
+
+    public List<String> getCandidateList() throws SQLException {
+        List<String> candidateList = new ArrayList<String>();
+        String SQL = "SELECT name FROM candidates;";
+        String name = null;
+
+        connect();
+
+        Statement statement = jdbcConnection.createStatement();
+        ResultSet resultSet = statement.executeQuery(SQL);
+
+        while (resultSet.next()) {
+            name = resultSet.getString("name");
+            candidateList.add(name);
+        }
+        resultSet.close();
+        statement.close();
+        disconnect();
+
+        return candidateList;
     }
 }
